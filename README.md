@@ -99,6 +99,13 @@ Please open an issue or submit a pull request.
 
 ---
 
+## 🚀 Deployment
+
+This project is designed to run locally on a system with a camera.
+It is not a web-based application and must be executed on a machine
+with Python and OpenCV installed.
+
+---
 ## 📝 License
 
 This project is licensed under the MIT License. See LICENSE for details.

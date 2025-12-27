@@ -94,6 +94,12 @@ It continuously monitors the camera feed, detects motion, and runs face recognit
 
 ## 🤝 Contributing
 
+This is a group project of team 4 members. 
+- Emma Vaishnavi ("Team Lead/ Manager")
+- Rakesh.L ("Testing/ Reporting")
+- Rafi ("Testing /Reporting ")
+- Sandeep Rathod.B ("Developer")
+
 Contributions, suggestions, and improvements are welcome!
 Please open an issue or submit a pull request.
 

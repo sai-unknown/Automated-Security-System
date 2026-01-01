@@ -7,7 +7,7 @@
 
 An AI-powered motion detection and face recognition system built with Python, OpenCV, and face_recognition library. This system monitors your camera feed in real-time, detects motion, and recognizes faces.
 
-## Features
+## ✨ Features
 
 - 🎥 **Real-time Motion Detection**: Detects movement in camera feed using background subtraction
 - 👤 **Face Recognition**: Recognizes known faces and saves unknown faces for review
@@ -15,7 +15,14 @@ An AI-powered motion detection and face recognition system built with Python, Op
 - 🖥️ **Modern GUI**: Beautiful, user-friendly interface built with Tkinter
 - 📸 **Face Registration**: Easy face registration system for adding known faces
 
-## Project Structure
+## 🛠 Tech Stack
+- **Python**  
+- **OpenCV**  
+- **Haar Cascades**  
+- **LBPH Face Recognizer**  
+- **CSV logging** 
+
+## 📂 Project Structure
 
 ```
 Automated-Security-System/
@@ -35,9 +42,12 @@ Automated-Security-System/
 │── motion_log.csv             # Motion detection log (auto-generated)
 ```
 
-## Installation
+## 📦 Installation
 
 1. **Clone or download this repository**
+   ```bash
+      git clone https://github.com/sai-unknown/Automated-Security-System.git
+   ```
 
 2. **Install Python dependencies:**
    ```bash
@@ -116,7 +126,7 @@ Motion detection sensitivity can be adjusted in `src/motion_detection.py`:
 - `pandas`: Data logging
 - `Pillow`: Image processing for GUI
 
-## Troubleshooting
+## 🔨 Troubleshooting
 
 ### Camera Not Found
 
@@ -138,11 +148,17 @@ Motion detection sensitivity can be adjusted in `src/motion_detection.py`:
 - Increase the delay between frames in `main.py`
 - Close other resource-intensive applications
 
-## License
+## 📝 License
 
 This project is open source and available for personal and educational use.
 
-## Contributing
+## 🤝 Contributing
+
+This is a group project of team 4 members. 
+- Emma Vaishnavi ("Team Lead/ Manager")
+- Rakesh.L ("Testing/ Reporting")
+- Rafi ("Testing /Reporting ")
+- Sandeep Rathod.B ("Developer")
 
 Feel free to submit issues, fork the repository, and create pull requests for any improvements.
 

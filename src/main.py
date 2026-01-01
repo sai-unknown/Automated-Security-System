@@ -13,25 +13,29 @@ from logger import save_log
 
 stop_flag = False
 
-
+# Detect motion and recognize faces in the frame
 def detect_motion_and_faces(cap, first_frame):
     ret, frame = cap.read()
     if not ret or frame is None:
         print("[ERROR]: Failed to read frame from camera")
         return None, first_frame, False, None
-
+    
+    # Detect motion
     updated_first_frame, motion_detected = detect_motion(frame, first_frame)
 
+    # Recognize faces if motion is detected
     face_names = []
     if motion_detected:
         frame, face_names = recognize_faces(frame)
+        print(f"[INFO]: Detected faces: {face_names}")
 
     return frame, updated_first_frame, motion_detected, face_names
 
-
+# Log motion events for GUI application
 def log_motion_for_gui(update_frame_callback, update_status_callback):
     global stop_flag
 
+# Open the camera
     cap = open_camera()
     if cap is None:
         update_status_callback("❌ ERROR: Could not access camera! Check if it's connected and not in use.")
@@ -47,13 +51,16 @@ def log_motion_for_gui(update_frame_callback, update_status_callback):
     motion_timestamps = []
     update_status_callback("✅ Camera opened. Starting detection...")
 
+# Allow camera to warm up
     time.sleep(1)
 
+# Detection loop
     try:
         frame_count = 0
         while not stop_flag:
             frame, first_frame, motion_detected, face_names = detect_motion_and_faces(cap, first_frame)
 
+            # Convert frame to ImageTk format for GUI display
             if frame is None:
                 update_status_callback("❌ Failed to read from webcam.")
                 break
@@ -102,7 +109,7 @@ def log_motion_for_gui(update_frame_callback, update_status_callback):
 
     return motion_timestamps
 
-
+# Thread-safe function to register a new face
 def register_new_face_threadsafe(root):
     name = simpledialog.askstring("Register Face", "Enter your name for registration:", parent=root)
     if name:
@@ -110,7 +117,7 @@ def register_new_face_threadsafe(root):
     else:
         messagebox.showwarning("Input Error", "Name cannot be empty.")
 
-
+# Run instructions for main module
 if __name__ == "__main__":
     print("Please run the GUI application using: python -m src.gui")
     print("Or import this module from your GUI application.")

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-
+# Find an available camera index
 def find_camera():
     print("[INFO]: Searching for available cameras...")
     for index in range(5):
@@ -16,7 +16,7 @@ def find_camera():
     print("[ERROR]: No working camera found!")
     return None
 
-
+# Open the camera with the given index or find an available one
 def open_camera(camera_index=None):
     if camera_index is None:
         camera_index = find_camera()
@@ -45,7 +45,7 @@ def open_camera(camera_index=None):
     print(f"[ERROR]: Failed to open camera at index {camera_index}")
     return None
 
-
+# Detect motion in the frame compared to the first frame
 def detect_motion(frame, first_frame):
     if frame is None:
         return first_frame, False

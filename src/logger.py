@@ -1,6 +1,6 @@
 import pandas as pd
 
-
+# Save motion detection log data to a CSV file
 def save_log(data, filename="motion_log.csv"):
     if data:
         try:

@@ -7,21 +7,25 @@ from datetime import datetime
 import random
 import tkinter.messagebox as messagebox
 
+# Directories for known and unknown faces
 KNOWN_FACES_DIR = os.path.join('data', 'known_faces')
 UNKNOWN_FACES_DIR = os.path.join('data', 'unknown_faces')
 
+# Ensure directories exist
 os.makedirs(UNKNOWN_FACES_DIR, exist_ok=True)
 os.makedirs(KNOWN_FACES_DIR, exist_ok=True)
 
+# Global lists to hold known face encodings and names
 known_encodings = []
 known_names = []
 
-
+# Load known faces from the directory
 def load_known_faces():
     global known_encodings, known_names
     known_encodings = []
     known_names = []
 
+# Load each image file in the known faces directory
     for filename in os.listdir(KNOWN_FACES_DIR):
         if filename.lower().endswith((".jpg", ".png")):
             path = os.path.join(KNOWN_FACES_DIR, filename)
@@ -34,10 +38,13 @@ def load_known_faces():
                 print(f"[Warning]: No faces found in {filename}. Skipping.")
 
 
+# Reload known faces (useful after adding new faces)
 def reload_known_faces():
     global known_encodings, known_names
     known_encodings = []
     known_names = []
+
+# Load each image file in the known faces directory
     for filename in os.listdir(KNOWN_FACES_DIR):
         if filename.lower().endswith((".jpg", ".png")):
             path = os.path.join(KNOWN_FACES_DIR, filename)
@@ -49,11 +56,13 @@ def reload_known_faces():
     print("[INFO]: Reloaded known faces from directory.")
 
 
+# Recognize faces in a given frame
 def recognize_faces(frame):
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     face_locations = face_recognition_lib.face_locations(rgb_frame)
     face_encodings = []
 
+# Get face encodings for detected faces
     if face_locations:
         try:
             face_encodings = face_recognition_lib.face_encodings(rgb_frame, face_locations)
@@ -61,6 +70,7 @@ def recognize_faces(frame):
             print(f"[Error]: Face encoding failed: {e}")
             face_encodings = []
 
+# Match detected faces with known faces
     face_names = []
     for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
         name = "Unknown"
@@ -70,10 +80,12 @@ def recognize_faces(frame):
             if distances[best_match_index] < 0.4:
                 name = known_names[best_match_index]
 
+# Draw rectangles and labels around detected faces
         cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
         cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
         face_names.append(name)
 
+# Save unknown faces to the unknown faces directory
         if name == "Unknown":
             now_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
             top_c = max(0, top)
@@ -81,6 +93,7 @@ def recognize_faces(frame):
             left_c = max(0, left)
             right_c = min(frame.shape[1], right)
 
+# Crop the face from the frame
             if bottom_c > top_c and right_c > left_c:
                 face_crop = frame[top_c:bottom_c, left_c:right_c]
                 if face_crop.size > 0:
@@ -89,18 +102,23 @@ def recognize_faces(frame):
                     success = cv2.imwrite(save_path, face_crop)
                     if success:
                         print(f"[INFO]: Saved unknown face to {save_path}.")
+                    else:
+                        print(f"[Error]: Failed to save unknown face to {save_path}.")
 
     return frame, face_names
 
 
+# Capture and save a new face for registration
 def capture_and_save_face(name):
     from motion_detection import open_camera
 
+# Open the camera
     cap = open_camera()
     if cap is None:
         messagebox.showerror("Camera Error", "Could not access camera. Please check if it's connected and not being used by another application.")
         return
 
+# Create a window to capture the face
     cv2.namedWindow("Register New Face - Press 'S' to Save, 'Q' to Quit")
     try:
         while True:
@@ -109,9 +127,11 @@ def capture_and_save_face(name):
                 print("[Error]: Failed to capture image from webcam.")
                 break
 
+# Display instructions on the frame
             cv2.putText(frame, "Press 'S' to Save | 'Q' to Quit", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
             cv2.imshow("Register New Face - Press 'S' to Save, 'Q' to Quit", frame)
 
+# Wait for user input
             key = cv2.waitKey(1) & 0xFF
             if key == ord('s'):
                 rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -133,5 +153,5 @@ def capture_and_save_face(name):
         cap.release()
         cv2.destroyAllWindows()
 
-
+# Initial load of known faces
 load_known_faces()

@@ -7,17 +7,19 @@ import cv2
 import sys
 import os
 
-# Fix import paths
+# Adjust sys.path to include src directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
 
-# Now import from src directory
+# Import main module functions
 from src import main
 
 
+# Main application class
 class ModernMotionApp:
+
     # Initialize the main GUI window and all components
     def __init__(self, root):
         self.root = root
@@ -36,7 +38,7 @@ class ModernMotionApp:
         self.create_control_panel()
         self.create_status_bar()
 
-    # Setup button styles and themes
+    # Setup custom styles for buttons and widgets
     def setup_styles(self):
         style = ttk.Style()
         style.theme_use('clam')
@@ -71,12 +73,13 @@ class ModernMotionApp:
                         padding=12)
         style.map('Register.TButton', background=[('active', '#ff9500')])
 
-    # Create the header section with title and subtitle
+    # Create header section with title and subtitle
     def create_header(self):
         header_frame = tk.Frame(self.root, bg="#1e2749", height=80)
         header_frame.pack(fill="x")
         header_frame.pack_propagate(False)
 
+        # Title label
         title_label = tk.Label(header_frame,
                                text="🎥 AI Motion Detection System",
                                font=("Segoe UI", 24, "bold"),
@@ -84,6 +87,7 @@ class ModernMotionApp:
                                fg="#00d9ff")
         title_label.pack(side="left", padx=30, pady=20)
 
+        # Subtitle label
         subtitle_label = tk.Label(header_frame,
                                   text="Real-time Face Recognition & Motion Tracking",
                                   font=("Segoe UI", 11),
@@ -91,14 +95,16 @@ class ModernMotionApp:
                                   fg="#8892b0")
         subtitle_label.pack(side="left", padx=10, pady=20)
 
-    # Create main video feed display area
+    # Create main content area for video feed
     def create_main_content(self):
         main_container = tk.Frame(self.root, bg="#0a0e27")
         main_container.pack(fill="both", expand=True, padx=20, pady=20)
 
+        # Video container
         video_container = tk.Frame(main_container, bg="#1e2749", relief="flat", bd=0)
         video_container.pack(fill="both", expand=True, padx=10, pady=10)
 
+        # Video display label
         self.video_label = tk.Label(video_container,
                                     text="📹\n\nCamera Feed Will Appear Here\n\nClick 'Start Detection' to begin",
                                     font=("Segoe UI", 16),
@@ -108,12 +114,13 @@ class ModernMotionApp:
                                     bd=0)
         self.video_label.pack(fill="both", expand=True, padx=3, pady=3)
 
-    # Create control panel buttons (Start, Stop, Register Face)
+    # Create control panel with Start, Stop, and Register buttons
     def create_control_panel(self):
         control_frame = tk.Frame(self.root, bg="#1e2749", height=100)
         control_frame.pack(fill="x", padx=20, pady=(0, 10))
         control_frame.pack_propagate(False)
 
+        # Button container
         button_container = tk.Frame(control_frame, bg="#1e2749")
         button_container.pack(expand=True)
 
@@ -166,30 +173,35 @@ class ModernMotionApp:
                                      command=self.stop_detection)
         self.stop_button.pack(side="left", padx=10)
 
-        # Add hover effects for buttons
+        # Add hover effects to buttons
         self.add_hover_effect(self.start_button, "#00d9ff", "#00b8d4")
         self.add_hover_effect(register_button, "#ffa502", "#ff9500")
         self.add_hover_effect(self.stop_button, "#ff4757", "#ee5a6f")
 
-    # Add hover effect to any button
+    # Add hover effect to buttons
     def add_hover_effect(self, button, normal_color, hover_color):
+
+        # Enter event handler
         def on_enter(e):
             if button['state'] != 'disabled':
                 button['background'] = hover_color
 
+        # Leave event handler
         def on_leave(e):
             if button['state'] != 'disabled':
                 button['background'] = normal_color
 
+        # Bind events to button
         button.bind("<Enter>", on_enter)
         button.bind("<Leave>", on_leave)
 
-    # Create bottom status bar for messages
+    # Create status bar at the bottom of the window
     def create_status_bar(self):
         status_frame = tk.Frame(self.root, bg="#1e2749", height=60)
         status_frame.pack(fill="x", side="bottom")
         status_frame.pack_propagate(False)
 
+        # Status indicator (colored dot)
         self.status_indicator = tk.Label(status_frame,
                                          text="●",
                                          font=("Segoe UI", 20),
@@ -197,9 +209,11 @@ class ModernMotionApp:
                                          fg="#64748b")
         self.status_indicator.pack(side="left", padx=20)
 
+        # Status text
         self.status_text = tk.StringVar()
         self.status_text.set("Ready to start detection")
 
+        # Status label
         status_label = tk.Label(status_frame,
                                 textvariable=self.status_text,
                                 font=("Segoe UI", 11),
@@ -208,6 +222,7 @@ class ModernMotionApp:
                                 anchor="w")
         status_label.pack(side="left", fill="x", expand=True, padx=10)
 
+        # Info label
         info_label = tk.Label(status_frame,
                               text="Powered by OpenCV & Face Recognition",
                               font=("Segoe UI", 9),
@@ -215,7 +230,8 @@ class ModernMotionApp:
                               fg="#64748b")
         info_label.pack(side="right", padx=20)
 
-    # Handle closing the window
+
+    # Handle window closing event
     def on_closing(self):
         if self.running:
             self.stop_detection()
@@ -230,6 +246,7 @@ class ModernMotionApp:
             label_width = self.video_label.winfo_width()
             label_height = self.video_label.winfo_height()
 
+            # Resize image to fit label while maintaining aspect ratio
             if label_width > 1 and label_height > 1:
                 img_aspect = img.width / img.height
                 label_aspect = label_width / label_height
@@ -243,12 +260,13 @@ class ModernMotionApp:
 
                 img = img.resize((new_width, new_height), Image.LANCZOS)
 
+            # Convert to ImageTk format
             imgtk = ImageTk.PhotoImage(img)
             self.root.after(0, self._update_label, imgtk)
         except Exception as e:
             print(f"[Error]: Frame update failed: {e}")
 
-    # Internal method to update the image label
+    # Internal method to update the video label
     def _update_label(self, imgtk):
         self.video_label.configure(image=imgtk, text="")
         self.video_label.image = imgtk
@@ -310,13 +328,13 @@ class ModernMotionApp:
     def on_register_face_click(self):
         main.register_new_face_threadsafe(self.root)
 
-
+# Launch the GUI application
 def main_app():
     """Launch the GUI application"""
     root = tk.Tk()
     app = ModernMotionApp(root)
     root.mainloop()
 
-
+# Run the GUI application
 if __name__ == "__main__":
     main_app()

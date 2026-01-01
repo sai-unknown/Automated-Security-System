@@ -1,4 +1,9 @@
 # Automated Security System
+![Python](https://img.shields.io/badge/python-3.11-blue?logo=python&logoColor=white)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+![Last Commit](https://img.shields.io/github/last-commit/sai-unknown/Automated-Security-System)
+![Repo Size](https://img.shields.io/github/repo-size/sai-unknown/Automated-Security-System)
+
 
 An AI-powered motion detection and face recognition system built with Python, OpenCV, and face_recognition library. This system monitors your camera feed in real-time, detects motion, and recognizes faces.
 

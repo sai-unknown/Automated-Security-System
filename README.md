@@ -44,7 +44,7 @@ Automated-Security-System/
 
 
 ## Demo
-![Project Demo]((https://github.com/sai-unknown/Automated-Security-System/blob/main/demo/demo.gif)
+![Project Demo]((https://github.com/sai-unknown/Automated-Security-System/blob/main/demo/demo.gif?raw=true)
 
 ## 📦 Installation
 

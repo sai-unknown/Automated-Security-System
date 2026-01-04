@@ -42,6 +42,10 @@ Automated-Security-System/
 │── motion_log.csv             # Motion detection log (auto-generated)
 ```
 
+
+## Demo
+![Project Demo]((https://github.com/sai-unknown/Automated-Security-System/blob/main/demo/demo.gif)
+
 ## 📦 Installation
 
 1. **Clone or download this repository**
